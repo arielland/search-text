@@ -60,20 +60,18 @@
 		}
 		function search(){
 			cleanSearch();
-			var phrases = document.getElementById('search').value.split(";");
+			var phrase = document.getElementById('search').value;
 			var elements = [];
 			var temp = "";
-			for (var f = 0; f < phrases.length; f++){
-				var phrase = phrases[f].trim();
-				for (var i = 0; i < clean.length; i++){
-					if (clean[i] !== undefined){
-						for (var j = 0; j < clean[i].length; j++){
-							if (clean[i][j] !== undefined){
-								for (var x = 0; x < clean[i][j].length; x++){
-									if (clean[i][j][x].indexOf(phrase) > -1) {
-										var found = getNextWord(clean[i][j][x], phrase);					
-										appendNewContent("searchoutput", "t" + (i + 1) + ":s" + (j + 1) + ":(p-" + (x + 1) + ")" + " - " + found, "a", "href", "#line" + i + j + x);
-									}
+
+			for (var i = 0; i < clean.length; i++){
+				if (clean[i] !== undefined){
+					for (var j = 0; j < clean[i].length; j++){
+						if (clean[i][j] !== undefined){
+							for (var x = 0; x < clean[i][j].length; x++){
+								if (clean[i][j][x].indexOf(phrase) > -1) {
+									var found = getNextWord(clean[i][j][x], phrase);					
+									appendNewContent("searchoutput", "t" + (i + 1) + ":s" + (j + 1) + ":(p-" + (x + 1) + ")" + " - " + found, "a", "href", "#line" + i + j + x);
 								}
 							}
 						}
