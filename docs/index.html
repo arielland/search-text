@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Read Text File</title>
+</head>
+
+<body>
+
+	<label for="search">Load file:</label>
+	<input type="file" name="inputfile"
+			id="inputfile">
+	<br>
+	
+	<label for="search">Search phrase:</label>
+	<input type="text" id="search" name="search">
+	<button type="button" onclick="search()">Search!</button>
+	<br>
+	<div class="result-format">Result format: Torah{number}:Section{number}:(Paragraph{number})</div>
+	<div>Result: </div>
+	<div id="searchoutput" style="direction: rtl;"></div>
+	<div id="output" style="direction: rtl; overflow-x: scroll;"></div>
+	
+	<script type="text/javascript">
+		var fr;
+		var clean;
+		document.getElementById('inputfile')
+			.addEventListener('change', function() {
+			
+			fr=new FileReader();
+			fr.onload=function(){
+				appendNewContent("searchoutput", "Loading file...", "span", "class", "loading");
+				//document.getElementById('output').textContent=fr.result;
+				clean = getCleanTextArray(fr.result);
+				addFileText(clean);
+				cleanSearch();
+				appendNewContent("searchoutput", "Done!", "span", "class", "loading");
+			}
+			
+			//fr.readAsArrayBuffer(this.files[0], 'ISO-8859-8');
+			fr.readAsText(this.files[0], 'ISO-8859-8');
+		})
+		function addFileText(text){
+			// loop parents
+			for (var i = 0; i < text.length; i++){	
+					appendNewContent("output", "Torah " + (i + 1).toString(), "h2", "id", "torah" + i.toString());
+					appendNewContent("output", "", "span", "class", "empty");
+					// loop children
+					for (var j = 0; j < text[i].length; j++){	
+						appendNewContent("output", "Section " + (j + 1).toString(), "h3", "id", "section" + j.toString());
+						appendNewContent("output", "", "span", "class", "empty");
+						// loop lines
+						for (var x = 0; x < text[i][j].length; x++){	
+							appendNewContent("output", (x + 1).toString(), "span", "class", "empty");
+							appendNewContent("output", text[i][j][x], "span", "id", "line" + i + j + x);
+							//console.log(i + " - " + j);
+						}
+					}
+				}
+		}
+		function search(){
+			cleanSearch();
+			var phrase = document.getElementById('search').value;
+			var elements = [];
+			var temp = "";
+
+			for (var i = 0; i < clean.length; i++){
+				if (clean[i] !== undefined){
+					for (var j = 0; j < clean[i].length; j++){
+						if (clean[i][j] !== undefined){
+							for (var x = 0; x < clean[i][j].length; x++){
+								if (clean[i][j][x].indexOf(phrase) > -1) {
+									var found = getNextWord(clean[i][j][x], phrase);					
+									appendNewContent("searchoutput", "t" + (i + 1) + ":s" + (j + 1) + ":(p-" + (x + 1) + ")" + " - " + found, "a", "href", "#line" + i + j + x);
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		function getNextWord(sentance, phrase){
+			var words = sentance.split(" ");
+			for (var j = 0; j < words.length; j++){
+				if (words[j].indexOf(phrase) > -1 && words.length >= j + 1){
+					return words[j + 1];
+				}
+			}
+		}
+		function appendNewContent(idToAppendTo, foundText, elementName, attributeName ,attributeToAdd){
+			var para = document.createElement(elementName);
+
+			// Create a text node:
+			var node = document.createTextNode(foundText);
+			// Append text node to the p element:
+			para.appendChild(node);
+			
+			para.setAttribute(attributeName, attributeToAdd);
+
+			// Append the p element to the body:
+			document.getElementById(idToAppendTo).appendChild(para);
+		}
+		function getCleanTextArray(input){
+			var temp = input.split("\n");
+			var parent = -1;
+			var child = -1;
+			<!-- var childContent = []; -->
+			<!-- var parentContent = []; -->
+			var content = [];
+			for (var i = 0; i < temp.length; i++){	
+				//console.log("content: " + temp[i]);
+				if (temp[i].indexOf("\r") > 0){
+					if (temp[i].indexOf("Torah") > -1)
+					{
+						<!-- if (parent > -1 && parentContent.length > 0){						 -->
+							<!-- content[parent] = parentContent; -->
+							<!-- parentContent = []; -->
+						<!-- } -->
+						parent++;
+						child = -1;
+						content[parent] = [];
+					}
+					else if (temp[i].indexOf("Section") > -1)
+					{
+						<!-- if (childContent.length > 0){						 -->
+							<!-- parentContent[child] = childContent; -->
+							<!-- childContent = []; -->
+						<!-- } -->
+						child++;
+						content[parent][child] = [];
+					}
+					else if (parent > -1)//to skip title of document
+					{
+						content[parent][child].push(temp[i]);
+					}
+				}
+				//console.log("parent: " + parent + ", child: " + child + ", cContentLen: " + childContent.length);
+			}
+			return content;			
+		}
+		function cleanSearch(){
+			document.getElementById("searchoutput").innerHTML = '';			
+		}
+	</script>
+	<style>
+		#output span, #searchoutput a {display: block;}
+		span.empty {width: 100%; display: block;}
+		.result-format {font-weight: bold;}
+	</style>
+</body>
+
+</html>
