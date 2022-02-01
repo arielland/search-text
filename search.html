@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Read Text File</title>
+</head>
+
+<body>
+
+	<label for="search">Load file:</label>
+	<input type="file" name="inputfile"
+			id="inputfile">
+	<br>
+	
+	<label for="search">Search phrase:</label>
+	<input type="text" id="search" name="search">
+	<button type="button" onclick="search()">Search!</button>
+	<br>
+	<div>Result:</div>
+	<div id="searchoutput" style="direction: rtl;"></div>
+	<div id="output" style="direction: rtl; overflow-x: scroll;"></div>
+	
+	<script type="text/javascript">
+		var fr;
+		var clean;
+		document.getElementById('inputfile')
+			.addEventListener('change', function() {
+			
+			fr=new FileReader();
+			fr.onload=function(){				
+				//document.getElementById('output').textContent=fr.result;
+				clean = getCleanTextArray(fr.result);
+				for (var i = 0; i < clean.length; i++){	
+					appendNewContent("output", i.toString() + "-" + clean[i], "span", "id", "line" + i.toString());
+				}
+			}
+			
+			//fr.readAsArrayBuffer(this.files[0], 'ISO-8859-8');
+			fr.readAsText(this.files[0], 'ISO-8859-8');
+		})
+		function search(){
+			cleanSearch();
+			var phrase = document.getElementById('search').value;
+			var elements = [];
+			var temp = "";
+
+			for (var i = 0; i < clean.length; i++){
+				if (clean[i].indexOf(phrase) > -1) {
+					var found = getNextWord(clean, i, phrase);					
+					appendNewContent("searchoutput", i.toString() + "-" + found, "a", "href", "#line" + i.toString());
+				}
+			}
+		}
+		function getNextWord(clean, i, phrase){
+			var words = clean[i].split(" ");
+			for (var j = 0; j < words.length; j++){
+				if (words[j].indexOf(phrase) > -1 && words.length >= j + 1){
+					return words[j + 1];
+				}
+			}
+		}
+		function appendNewContent(idToAppendTo, foundText, elementName, attributeName ,attributeToAdd){
+			var para = document.createElement(elementName);
+
+			// Create a text node:
+			var node = document.createTextNode(foundText);
+			// Append text node to the p element:
+			para.appendChild(node);
+			
+			para.setAttribute(attributeName, attributeToAdd);
+
+			// Append the p element to the body:
+			document.getElementById(idToAppendTo).appendChild(para);
+		}
+		function getCleanTextArray(input){
+			var temp = input.split("\n");
+			var output = [];
+			for (var i = 0; i < temp.length; i++){	
+				if (temp[i].indexOf("\r") > 0){
+					output.push(temp[i]);
+				}
+			}
+			return output;			
+		}
+		function cleanSearch(){
+			document.getElementById("searchoutput").innerHTML = '';			
+		}
+	</script>
+	<style>
+		#output span, #searchoutput a {display: block;}
+	</style>
+</body>
+
+</html>
