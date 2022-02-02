@@ -50,12 +50,24 @@
 		})
 		
 		var client = new XMLHttpRequest();
-		client.open('GET', '/search-text/cleanLikuteyMuharan.txt');
-		client.onreadystatechange = function() {
-			clean = getCleanTextArray(client.responseText);
-			addFileText(clean);
-			cleanSearch();
-		}
+		client.open('GET', '/search-text/cleanLikuteyMuharan.txt', true);
+		xhr.responseType = 'blob';
+		xhr.onload = function() {
+		  if (this.status === 200) {
+			var a = new FileReader();
+			a.readAsBinaryString(this.response);
+			a.onloadend = function() {
+			  var hash = crypto.createHash('sha1');
+			  hash.update(a.result, 'binary');
+			  console.log(hash.digest('hex'));
+			};
+		  }
+		};
+		<!-- client.onreadystatechange = function() { -->
+			<!-- clean = getCleanTextArray(client.responseText); -->
+			<!-- addFileText(clean); -->
+			<!-- cleanSearch(); -->
+		<!-- } -->
 		client.send();
 		
 		function addFileText(text){
