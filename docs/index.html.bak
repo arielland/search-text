@@ -60,7 +60,7 @@
 				  <!-- addFileText(clean); -->
 				  <!-- cleanText(); -->
 			<!-- }, -->
-			contentType: 'text/html; charset=Windows-1255'})
+			 contentType: 'application/x-www-form-urlencoded;charset=UTF-8'})<!--'text/html; charset=Windows-1255'}) -->
 		  .done(function(data) {
 			alert( "success" );
 			console.log(data);
