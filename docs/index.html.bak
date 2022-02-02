@@ -51,12 +51,23 @@
 			fr.readAsText(this.files[0], 'ISO-8859-8');
 		})
 		
-		$.get( '/search-text/cleanLikuteyMuharan.txt', function( data ) {
-		  console.log(data);
-		  clean = getCleanTextArray(data);
-		  addFileText(clean);
-		  cleanText();
+		$.ajax({
+			url: '/search-text/cleanLikuteyMuharan.txt',
+			success: function( data ) {
+				  console.log(data);
+				  clean = getCleanTextArray(data);
+				  addFileText(clean);
+				  cleanText();
+			},
+			dataType: 'text/html; charset=Windows-1255'
 		});
+
+		<!-- $.get( '/search-text/cleanLikuteyMuharan.txt', function( data ) { -->
+		  <!-- console.log(data); -->
+		  <!-- clean = getCleanTextArray(data); -->
+		  <!-- addFileText(clean); -->
+		  <!-- cleanText(); -->
+		<!-- }, 'text/html; charset=Windows-1255'); -->
 		<!-- var client = new XMLHttpRequest(); -->
 		<!-- client.open('GET', '/search-text/cleanLikuteyMuharan.txt', true); -->
 		<!-- client.responseType = 'blob'; -->
