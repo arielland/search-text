@@ -7,11 +7,18 @@
 
 <body>
 
+	<div>last update: 2022-02-02 09:43
+		<ul>
+		  <li>Auto load a cleaned up Likutey Muharan file</li>
+		  <li>Can search multiple words seperated with ";" </li>
+		  <li>Skipping "(...)" and getting next word</li>
+		</ul>
+	</div>
 	<label for="search">Load file:</label>
 	<input type="file" name="inputfile"	id="inputfile">
 	<br>
 	
-	<label for="search">Search phrase:</label>
+	<label for="search">Search phrase (search multiple words seperated with ";"):</label>
 	<input type="text" id="search" name="search">
 	<button type="button" onclick="search()">Search!</button>
 	<br>
@@ -43,9 +50,11 @@
 		})
 		
 		var client = new XMLHttpRequest();
-		client.open('GET', '/cleanLikuteyMuharan.txt');
+		client.open('GET', '/search-text/cleanLikuteyMuharan.txt');
 		client.onreadystatechange = function() {
-		  alert(client.responseText);
+			clean = getCleanTextArray(client.responseText);
+			addFileText(clean);
+			cleanSearch();
 		}
 		client.send();
 		
