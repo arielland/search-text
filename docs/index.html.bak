@@ -3,6 +3,7 @@
 
 <head>
 	<title>Search Text File</title>
+	<script src="/search-text/jquery-3.6.0.min.js"></script>
 </head>
 
 <body>
@@ -49,26 +50,32 @@
 			fr.readAsText(this.files[0], 'ISO-8859-8');
 		})
 		
-		var client = new XMLHttpRequest();
-		client.open('GET', '/search-text/cleanLikuteyMuharan.txt', true);
-		xhr.responseType = 'blob';
-		xhr.onload = function() {
-		  if (this.status === 200) {
-			var a = new FileReader();
-			a.readAsBinaryString(this.response);
-			a.onloadend = function() {
-			  var hash = crypto.createHash('sha1');
-			  hash.update(a.result, 'binary');
-			  console.log(hash.digest('hex'));
-			};
-		  }
-		};
+		$.get( '/search-text/cleanLikuteyMuharan.txt', function( data ) {
+		  console.log(data);
+		  clean = getCleanTextArray(data);
+		  addFileText(clean);
+		  cleanSearch();
+		});
+		<!-- var client = new XMLHttpRequest(); -->
+		<!-- client.open('GET', '/search-text/cleanLikuteyMuharan.txt', true); -->
+		<!-- client.responseType = 'blob'; -->
+		<!-- client.onload = function() { -->
+		  <!-- if (this.status === 200) { -->
+			<!-- var a = new FileReader(); -->
+			<!-- a.readAsBinaryString(this.response); -->
+			<!-- a.onloadend = function() { -->
+			  <!-- var hash = crypto.createHash('sha1'); -->
+			  <!-- hash.update(a.result, 'binary'); -->
+			  <!-- console.log(hash.digest('hex')); -->
+			<!-- }; -->
+		  <!-- } -->
+		<!-- }; -->
 		<!-- client.onreadystatechange = function() { -->
 			<!-- clean = getCleanTextArray(client.responseText); -->
 			<!-- addFileText(clean); -->
 			<!-- cleanSearch(); -->
 		<!-- } -->
-		client.send();
+		<!-- client.send(); -->
 		
 		function addFileText(text){
 			// loop parents
