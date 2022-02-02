@@ -3,7 +3,7 @@
 
 <head>
 	<title>Search Text File</title>
-	<script src="/search-text/jquery-3.6.0.min.js"></script>
+	<!-- <script src="/search-text/jquery-3.6.0.min.js"></script> -->
 </head>
 
 <body>
@@ -15,6 +15,7 @@
 		  <li>Skipping "(...)" and getting next word</li>
 		</ul>
 	</div>
+	<a href="/search-text/cleanLikuteyMuharan.txt">Download this file and load it!</a>
 	<label for="search">Load file:</label>
 	<input type="file" name="inputfile"	id="inputfile">
 	<br>
@@ -29,22 +30,8 @@
 	<div id="searchoutput" class="heb"></div>
 	<div>Rendered Content: </div>
 	<div id="output" class="heb"></div>
-	<div>
+	<!-- <div id="hidden-content"> -->
 	
-ליקוטי מוהר"ן
-
-
-Torah 8
-
-Section 3
-
-ג אך רשעים, הדוברים על צדיק עתק בגאוה ובוז, מאין מקבלין הם הרוח להשלים החסרון. אך דע, שיש רב דקלפה, והוא בחינת עשו, כמו שכתוב בעשו (בראשית ל"ג:ט'): יש לי רב; והוא בחינת אלופי עשו, וכמו שתרגם אונקלוס: רברבי עשו, בחינת הרב דקלפה,
-ומהם מקבלין הרשעים הרוח, והוא בחינת רוח הטמאה, בחינת רוח סערה, כמו שכתוב (שם כז): הן עשו אחי איש שעיר; ועל כן הרוח שלהם גדול ותקיף לפי שעה, כמו רוח-סערה שהוא גדול בשעתו.
-ועל כן: כל צורריו יפיח בהם (תהלים י) – יפיח דיקא, שמתגבר עליהם על-ידי בחינת רוח פיו, שהוא גדול בשעתו, אך שאין לו קיום כלל, ולסוף כלה ונאבד, ומסער גופה ונשמתה;
-וכמו שכתוב (דברים ז':י'): ומשלם לשנאיו אל פניו להאבידו. ומשלם – לשון שלמות החסרון שנמשך לו, דהינו בחינת אריכת הרוח. וזהו: אל פניו, כי פניו הוא בחינת הרוח, כמו שכתוב (ישעיהו ג':ט'): הכרת פניהם ענתה בם – זה החטם (יבמות קכ.), שהוא בחינת הרוח, כמו שכתוב: ויפח באפיו נשמת חיים; כל אשר נשמת רוח חיים באפיו; אך הוא להאבידו, כי אף שהוא גדול לפי שעה, לסוף נאבד כנ"ל.
-וזהו בחינת (ירושלמי תענית פ"ב ה"א): ארך אפים לרשעים*), כי הרוח הנשימה הוא בבחינת ארך אפים, והינו מאריך אפה וגבי דילה, כי אף שלפי שעה הרוח גדול ותקיף, בחינת מאריך אפה, אך לסוף גבי דילה כנ"ל.
-ועל כן נקראים ישראל עניה סערה (ישעיהו נ"ד:י"א), כי הם עכשו תחת ממשלת עשו איש שעיר, בחינת רוח-סערה הנ"ל; אך הדבוק בצדיקים מקבל הרוח-חיים, שלמות החסרון, מהצדיק והרב דקדשה:
-
 	</div>
 	<script type="text/javascript">
 		var fr;
@@ -67,67 +54,9 @@ Section 3
 			fr.readAsText(this.files[0], 'ISO-8859-8');
 		})
 		
-		$.ajax({
-			method: "GET",
-			url: '/search-text/cleanLikuteyMuharan.txt',
-			<!-- success: function( data ) { -->
-				  <!-- console.log(data); -->
-				  <!-- clean = getCleanTextArray(data); -->
-				  <!-- addFileText(clean); -->
-				  <!-- cleanText(); -->
-			<!-- }, -->
-			 contentType: 'text/html;charset=UTF-8'})<!--'text/html; charset=Windows-1255'}) -->
-		  .done(function(data) {
-			alert( "success" );
-			console.log(data);
-				  clean = getCleanTextArray(data);
-				  addFileText(clean);
-				  cleanText();
-		  })
-		  .fail(function() {
-			alert( "error" );
-		  })
-		  .always(function() {
-			alert( "complete" );
-		  });
-  
-		<!-- $.ajax({ -->
-			<!-- url: '/search-text/cleanLikuteyMuharan.txt', -->
-			<!-- success: function( data ) { -->
-				  <!-- console.log(data); -->
-				  <!-- clean = getCleanTextArray(data); -->
-				  <!-- addFileText(clean); -->
-				  <!-- cleanText(); -->
-			<!-- }, -->
-			<!-- dataType: 'text/html; charset=Windows-1255' -->
-		<!-- }); -->
-
-		<!-- $.get( '/search-text/cleanLikuteyMuharan.txt', function( data ) { -->
-		  <!-- console.log(data); -->
-		  <!-- clean = getCleanTextArray(data); -->
-		  <!-- addFileText(clean); -->
-		  <!-- cleanText(); -->
-		<!-- }, 'text/html; charset=Windows-1255'); -->
-		<!-- var client = new XMLHttpRequest(); -->
-		<!-- client.open('GET', '/search-text/cleanLikuteyMuharan.txt', true); -->
-		<!-- client.responseType = 'blob'; -->
-		<!-- client.onload = function() { -->
-		  <!-- if (this.status === 200) { -->
-			<!-- var a = new FileReader(); -->
-			<!-- a.readAsBinaryString(this.response); -->
-			<!-- a.onloadend = function() { -->
-			  <!-- var hash = crypto.createHash('sha1'); -->
-			  <!-- hash.update(a.result, 'binary'); -->
-			  <!-- console.log(hash.digest('hex')); -->
-			<!-- }; -->
-		  <!-- } -->
-		<!-- }; -->
-		<!-- client.onreadystatechange = function() { -->
-			<!-- clean = getCleanTextArray(client.responseText); -->
-			<!-- addFileText(clean); -->
-			<!-- cleanSearch(); -->
-		<!-- } -->
-		<!-- client.send(); -->
+		<!-- var innerT = document.getElementById("hidden-content").innerHTML; -->
+		<!-- clean = getCleanTextArray(innerT); -->
+		<!-- addFileText(clean); -->
 		
 		function addFileText(text){
 			// loop parents
@@ -249,6 +178,7 @@ Section 3
 		#output span, #searchoutput a {display: block;}
 		span.empty {width: 100%; display: block;}
 		.result-format {font-weight: bold;}
+		#hidden-content {display: none;}
 	</style>
 </body>
 
