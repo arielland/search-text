@@ -136,31 +136,31 @@
 			var content = [];
 			for (var i = 0; i < temp.length; i++){	
 				//console.log("content: " + temp[i]);
-				if (temp[i].indexOf("\r") > 0){
-					if (temp[i].indexOf("Torah") > -1)
-					{
-						<!-- if (parent > -1 && parentContent.length > 0){						 -->
-							<!-- content[parent] = parentContent; -->
-							<!-- parentContent = []; -->
-						<!-- } -->
-						parent++;
-						child = -1;
-						content[parent] = [];
-					}
-					else if (temp[i].indexOf("Section") > -1)
-					{
-						<!-- if (childContent.length > 0){						 -->
-							<!-- parentContent[child] = childContent; -->
-							<!-- childContent = []; -->
-						<!-- } -->
-						child++;
-						content[parent][child] = [];
-					}
-					else if (parent > -1)//to skip title of document
-					{
-						content[parent][child].push(temp[i]);
-					}
+				//if (temp[i].indexOf("\r") > 0){
+				if (temp[i].indexOf("Torah") > -1)
+				{
+					<!-- if (parent > -1 && parentContent.length > 0){						 -->
+						<!-- content[parent] = parentContent; -->
+						<!-- parentContent = []; -->
+					<!-- } -->
+					parent++;
+					child = -1;
+					content[parent] = [];
 				}
+				else if (temp[i].indexOf("Section") > -1)
+				{
+					<!-- if (childContent.length > 0){						 -->
+						<!-- parentContent[child] = childContent; -->
+						<!-- childContent = []; -->
+					<!-- } -->
+					child++;
+					content[parent][child] = [];
+				}
+				else if (parent > -1)//to skip title of document
+				{
+					content[parent][child].push(temp[i]);
+				}
+				//}
 				//console.log("parent: " + parent + ", child: " + child + ", cContentLen: " + childContent.length);
 			}
 			return content;			

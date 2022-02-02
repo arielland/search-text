@@ -15,7 +15,7 @@
 		  <li>Skipping "(...)" and getting next word</li>
 		</ul>
 	</div>
-	<a href="/search-text/cleanLikuteyMuharan.txt">Download this file and load it!</a>
+	<a href="/search-text/cleanLikuteyMuharan.txt" download>Download this file and load it!</a>
 	<label for="search">Load file:</label>
 	<input type="file" name="inputfile"	id="inputfile">
 	<br>
