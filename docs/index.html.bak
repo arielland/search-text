@@ -8,11 +8,15 @@
 
 <body>
 
-	<div>last update: 2022-02-02 09:43
+	<div>last update: 2022-02-02 18:25
 		<ul>
-		  <li>Auto load a cleaned up Likutey Muharan file</li>
+		  <li>Added the file to (download and then) load (this is a "clean" file...)</li>
 		  <li>Can search multiple words seperated with ";" </li>
 		  <li>Skipping "(...)" and getting next word</li>
+		</ul>
+		<span>Next up:</span>
+		<ul>
+		  <li>Group results and display list of sources for each result</li>
 		</ul>
 	</div>
 	<a href="/search-text/cleanLikuteyMuharan.txt" download>Download this file and load it!</a>
@@ -136,31 +140,31 @@
 			var content = [];
 			for (var i = 0; i < temp.length; i++){	
 				//console.log("content: " + temp[i]);
-				if (temp[i].indexOf("\r") > 0){
-					if (temp[i].indexOf("Torah") > -1)
-					{
-						<!-- if (parent > -1 && parentContent.length > 0){						 -->
-							<!-- content[parent] = parentContent; -->
-							<!-- parentContent = []; -->
-						<!-- } -->
-						parent++;
-						child = -1;
-						content[parent] = [];
-					}
-					else if (temp[i].indexOf("Section") > -1)
-					{
-						<!-- if (childContent.length > 0){						 -->
-							<!-- parentContent[child] = childContent; -->
-							<!-- childContent = []; -->
-						<!-- } -->
-						child++;
-						content[parent][child] = [];
-					}
-					else if (parent > -1)//to skip title of document
-					{
-						content[parent][child].push(temp[i]);
-					}
+				//if (temp[i].indexOf("\r") > 0){
+				if (temp[i].indexOf("Torah") > -1)
+				{
+					<!-- if (parent > -1 && parentContent.length > 0){						 -->
+						<!-- content[parent] = parentContent; -->
+						<!-- parentContent = []; -->
+					<!-- } -->
+					parent++;
+					child = -1;
+					content[parent] = [];
 				}
+				else if (temp[i].indexOf("Section") > -1)
+				{
+					<!-- if (childContent.length > 0){						 -->
+						<!-- parentContent[child] = childContent; -->
+						<!-- childContent = []; -->
+					<!-- } -->
+					child++;
+					content[parent][child] = [];
+				}
+				else if (parent > -1)//to skip title of document
+				{
+					content[parent][child].push(temp[i]);
+				}
+				//}
 				//console.log("parent: " + parent + ", child: " + child + ", cContentLen: " + childContent.length);
 			}
 			return content;			
