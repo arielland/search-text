@@ -18,7 +18,7 @@
 	<input type="file" name="inputfile"	id="inputfile">
 	<br>
 	
-	<label for="search">Search phrase:</label>
+	<label for="search">Search phrase (search multiple words seperated with ";"):</label>
 	<input type="text" id="search" name="search">
 	<button type="button" onclick="search()">Search!</button>
 	<br>
