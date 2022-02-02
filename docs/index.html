@@ -2,24 +2,25 @@
 <html>
 
 <head>
-	<title>Read Text File</title>
+	<title>Search Text File</title>
 </head>
 
 <body>
 
 	<label for="search">Load file:</label>
-	<input type="file" name="inputfile"
-			id="inputfile">
+	<input type="file" name="inputfile"	id="inputfile">
 	<br>
 	
 	<label for="search">Search phrase:</label>
 	<input type="text" id="search" name="search">
 	<button type="button" onclick="search()">Search!</button>
 	<br>
+	
 	<div class="result-format">Result format: Torah{number}:Section{number}:(Paragraph{number})</div>
-	<div>Result: </div>
-	<div id="searchoutput" style="direction: rtl;"></div>
-	<div id="output" style="direction: rtl; overflow-x: scroll;"></div>
+	<div>Search Result: </div>
+	<div id="searchoutput" class="heb"></div>
+	<div>Rendered Content: </div>
+	<div id="output" class="heb"></div>
 	
 	<script type="text/javascript">
 		var fr;
@@ -40,6 +41,14 @@
 			//fr.readAsArrayBuffer(this.files[0], 'ISO-8859-8');
 			fr.readAsText(this.files[0], 'ISO-8859-8');
 		})
+		
+		var client = new XMLHttpRequest();
+		client.open('GET', '/cleanLikuteyMuharan.txt');
+		client.onreadystatechange = function() {
+		  alert(client.responseText);
+		}
+		client.send();
+		
 		function addFileText(text){
 			// loop parents
 			for (var i = 0; i < text.length; i++){	
@@ -81,11 +90,18 @@
 				}
 			}
 		}
-		function getNextWord(sentance, phrase){
+		function getNextWord(sentance, phrase, startAt = 0, searchEndPrenthesies = false){
 			var words = sentance.split(" ");
-			for (var j = 0; j < words.length; j++){
+			for (var j = startAt; j < words.length - 1; j++){
 				if (words[j].indexOf(phrase) > -1 && words.length >= j + 1){
-					return words[j + 1];
+					var nextWord = words[j + 1];
+					if (searchEndPrenthesies){
+						return nextWord;
+					}
+					else if (nextWord.indexOf("(") > -1 && !searchEndPrenthesies){
+						return getNextWord(sentance, ")", j + 1, true);
+					}
+					else if (!searchEndPrenthesies) return nextWord.replaceAll(/,|;|:|\./ig, "");
 				}
 			}
 		}
@@ -145,6 +161,8 @@
 		}
 	</script>
 	<style>
+		.heb {direction: rtl;}
+		#output {overflow-x: scroll;}
 		#output span, #searchoutput a {display: block;}
 		span.empty {width: 100%; display: block;}
 		.result-format {font-weight: bold;}
