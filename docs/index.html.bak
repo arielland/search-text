@@ -114,7 +114,7 @@
 					else if (nextWord.indexOf("(") > -1 && !searchEndPrenthesies){
 						return getNextWord(sentance, ")", j + 1, true);
 					}
-					else if (!searchEndPrenthesies) return nextWord.replaceAll(/,|;|:|\./ig, "");
+					else if (!searchEndPrenthesies) return nextWord.replaceAll(/,|;|*|:|\./ig, "");
 				}
 			}
 		}
