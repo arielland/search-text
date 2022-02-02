@@ -29,7 +29,7 @@
 	<div id="searchoutput" class="heb"></div>
 	<div>Rendered Content: </div>
 	<div id="output" class="heb"></div>
-	<embed src='/cleanLikuteyMuharan.txt'>
+	<embed src='/search-text/cleanLikuteyMuharan.txt'>
 	<script type="text/javascript">
 		var fr;
 		var clean;

@@ -29,7 +29,7 @@
 	<div id="searchoutput" class="heb"></div>
 	<div>Rendered Content: </div>
 	<div id="output" class="heb"></div>
-	<embed src='/search-text/cleanLikuteyMuharan.txt'>
+	
 	<script type="text/javascript">
 		var fr;
 		var clean;
@@ -51,29 +51,29 @@
 			fr.readAsText(this.files[0], 'ISO-8859-8');
 		})
 		
-		<!-- $.ajax({ -->
-			<!-- method: "GET", -->
-			<!-- url: '/search-text/cleanLikuteyMuharan.txt', -->
-			<!-- <!-- success: function( data ) { --> -->
-				  <!-- <!-- console.log(data); --> -->
-				  <!-- <!-- clean = getCleanTextArray(data); --> -->
-				  <!-- <!-- addFileText(clean); --> -->
-				  <!-- <!-- cleanText(); --> -->
-			<!-- <!-- }, --> -->
-			<!-- dataType: 'text/html; charset=Windows-1255'}) -->
-		  <!-- .done(function(data) { -->
-			<!-- alert( "success" ); -->
-			<!-- console.log(data); -->
+		$.ajax({
+			method: "GET",
+			url: '/search-text/cleanLikuteyMuharan.txt',
+			<!-- success: function( data ) { -->
+				  <!-- console.log(data); -->
 				  <!-- clean = getCleanTextArray(data); -->
 				  <!-- addFileText(clean); -->
 				  <!-- cleanText(); -->
-		  <!-- }) -->
-		  <!-- .fail(function() { -->
-			<!-- alert( "error" ); -->
-		  <!-- }) -->
-		  <!-- .always(function() { -->
-			<!-- alert( "complete" ); -->
-		  <!-- }); -->
+			<!-- }, -->
+			contentType: 'text/html; charset=Windows-1255'})
+		  .done(function(data) {
+			alert( "success" );
+			console.log(data);
+				  clean = getCleanTextArray(data);
+				  addFileText(clean);
+				  cleanText();
+		  })
+		  .fail(function() {
+			alert( "error" );
+		  })
+		  .always(function() {
+			alert( "complete" );
+		  });
   
 		<!-- $.ajax({ -->
 			<!-- url: '/search-text/cleanLikuteyMuharan.txt', -->
