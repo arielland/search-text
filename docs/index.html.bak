@@ -239,7 +239,7 @@
 		h4[id^="word-title"] {display: block; margin: 0;}
 		#searchoutput a {display: inline; margin: 0 4px;}
 		.at-result {display: block;}
-		#searchoutput a:after {content: ","; }
+		
 	</style>
 </body>
 
