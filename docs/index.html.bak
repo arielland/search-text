@@ -4,6 +4,8 @@
 <head>
 	<title>Search Text File</title>
 	<!-- <script src="/search-text/jquery-3.6.0.min.js"></script> -->
+	<script src="/search-text/underscore-umd-min.js"></script>
+	<script src="underscore-umd-min.js"></script>
 </head>
 
 <body>
@@ -40,6 +42,11 @@
 	<script type="text/javascript">
 		var fr;
 		var clean;
+		var heb = [
+			['אבגדהוזחט'],
+			['יכלמנסעפצ'],
+			['קרשת']
+		];
 		document.getElementById('inputfile')
 			.addEventListener('change', function() {
 			
@@ -57,6 +64,7 @@
 			//fr.readAsArrayBuffer(this.files[0], 'ISO-8859-8');
 			fr.readAsText(this.files[0], 'ISO-8859-8');
 		})
+		//runTest();
 		
 		<!-- var innerT = document.getElementById("hidden-content").innerHTML; -->
 		<!-- clean = getCleanTextArray(innerT); -->
@@ -83,7 +91,7 @@
 		function search(){
 			cleanSearch();
 			var phrases = document.getElementById('search').value.split(";");
-			var elements = [];
+			var results = [];
 			var temp = "";
 			for (var f = 0; f < phrases.length; f++){
 				var phrase = phrases[f].trim();
@@ -92,9 +100,21 @@
 						for (var j = 0; j < clean[i].length; j++){
 							if (clean[i][j] !== undefined){
 								for (var x = 0; x < clean[i][j].length; x++){
-									if (clean[i][j][x].indexOf(phrase) > -1) {
-										var found = getNextWord(clean[i][j][x], phrase);					
-										appendNewContent("searchoutput", "t" + (i + 1) + ":s" + (j + 1) + ":(p-" + (x + 1) + ")" + " - " + found, "a", "href", "#line" + i + j + x);
+									if (clean[i][j][x].indexOf(phrase) > -1) {									
+										var found = getNextWord(clean[i][j][x], phrase);
+										var foundAt = "t" + (i + 1) + ":s" + (j + 1) + ":(p-" + (x + 1) + ")";	
+										var foundAtHeb = getHebFoundAt(i + 1, j + 1, x + 1);	
+										var resIndex = _.findIndex(results, predicate => predicate.phrase === found);
+										if (resIndex === -1){
+											resIndex = results.length;
+											results[resIndex] = { phrase: found, foundAtArr: [] };
+										}
+										results[resIndex].foundAtArr.push({ id: "#line" + i + j + x, text: foundAtHeb });
+										<!-- appendNewContent("searchoutput",  -->
+														 <!-- foundAt + " - " + found,  -->
+														 <!-- "a",  -->
+														 <!-- "href",  -->
+														 <!-- "#line" + i + j + x); -->
 									}
 								}
 							}
@@ -102,6 +122,29 @@
 					}
 				}
 			}
+			for (var r = 0; r < results.length; r++){
+				appendNewContent("searchoutput", results[r].phrase, "h4", "id", "word-title" + r);
+				for (var ri = 0; ri < results[r].foundAtArr.length; ri++){
+					appendNewContent("searchoutput", results[r].foundAtArr[ri].text + ",", "a", "href", results[r].foundAtArr[ri].id);
+				}
+			}
+		}
+		function getHebFoundAt(t, s, p){
+			return getHebIndex(t) + ":" + getHebIndex(s) + ":(" + getHebIndex(p) + ")";
+		}
+		function getHebIndex(number){
+			var result = "";
+			var stringNumber = new String(number);
+			var hebIndex = 0;
+			for (var i = stringNumber.length - 1; i > -1 ; i--){				
+				var innerIndex = stringNumber.length - 1 - i;
+				var finalInnerIndex = parseInt(stringNumber[i]) - 1;
+				if (finalInnerIndex > -1){
+					result = heb[hebIndex][0][finalInnerIndex] + result;
+				}
+				hebIndex++;
+			}
+			return result;
 		}
 		function getNextWord(sentance, phrase, startAt = 0, searchEndPrenthesies = false){
 			var words = sentance.split(" ");
@@ -114,15 +157,15 @@
 					else if (nextWord.indexOf("(") > -1 && !searchEndPrenthesies){
 						return getNextWord(sentance, ")", j + 1, true);
 					}
-					else if (!searchEndPrenthesies) return nextWord.replaceAll(/,|;|*|:|\./ig, "");
+					else if (!searchEndPrenthesies) return nextWord.replaceAll(/,|;|\*|:|\./ig, "");
 				}
 			}
 		}
-		function appendNewContent(idToAppendTo, foundText, elementName, attributeName ,attributeToAdd){
+		function appendNewContent(idToAppendTo, innerText, elementName, attributeName ,attributeToAdd){
 			var para = document.createElement(elementName);
 
 			// Create a text node:
-			var node = document.createTextNode(foundText);
+			var node = document.createTextNode(innerText);
 			// Append text node to the p element:
 			para.appendChild(node);
 			
@@ -130,6 +173,9 @@
 
 			// Append the p element to the body:
 			document.getElementById(idToAppendTo).appendChild(para);
+		}
+		function appendNewContentAsElement(idToAppendTo, element){			
+			document.getElementById(idToAppendTo).appendChild(element);
 		}
 		function getCleanTextArray(input){
 			var temp = input.split("\n");
@@ -175,14 +221,25 @@
 		function cleanText(){
 			document.getElementById("output").innerHTML = '';			
 		}
+		function runTest(){
+			for (var i = 0; i < 112; i++){
+				var res = getHebIndex(i);
+				console.log(i + " => " + res);
+			}
+		}
 	</script>
 	<style>
 		.heb {direction: rtl;}
 		#output {overflow-x: scroll;}
-		#output span, #searchoutput a {display: block;}
+		#output span {display: block;}
 		span.empty {width: 100%; display: block;}
 		.result-format {font-weight: bold;}
 		#hidden-content {display: none;}
+		div[id^="word-wrapper"] {display: block;}
+		h4[id^="word-title"] {display: block; margin: 0;}
+		#searchoutput a {display: inline; margin: 0 4px;}
+		.at-result {display: block;}
+		#searchoutput a:after {content: ","; }
 	</style>
 </body>
 
